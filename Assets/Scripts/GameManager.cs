@@ -1,3 +1,6 @@
+﻿using IronPython;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -16,7 +19,33 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         EndGamePanel.SetActive(false);
+
+        try
+        {
+            // Create the Python engine
+            ScriptEngine engine = Python.CreateEngine();
+
+            // Create a simple Python script
+            string code = @"
+print('Hello from IronPython!')
+x = 2 + 2
+x
+";
+
+            // Run it and get the result
+            ScriptScope scope = engine.CreateScope();
+            object result = engine.Execute(code, scope);
+
+            Debug.Log(" IronPython ran successfully. Result: " + result);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("X IronPython test failed: " + ex.Message);
+        }
+
+
     }
+
 
     // Update is called once per frame
     void Update()
